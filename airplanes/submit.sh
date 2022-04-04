@@ -21,3 +21,20 @@ jobId3=$(sbatch --output="slurm_out/slurm-%A_%a.out" \
                 --error="slurm_out/slurm-%A_%a.err" \
                 --dependency=afterok:$jobId2 \
                 findFarthest.sh)
+
+jobId3=$(echo $jobId3 | sed 's/Submitted batch job //')
+
+jobId4=$(sbatch --array=1-7 \
+                --output="slurm_out/slurm-%A_%a.out" \
+                --error="slurm_out/slurm-%A_%a.err" \
+                --dependency=afterok:$jobId2 \
+		findDelays.sh)
+
+jobId4=$(echo $jobId4 | sed 's/Submitted batch job //')
+
+jobId5=$(sbatch --output="slurm_out/slurm-%A_%a.out" \
+                --error="slurm_out/slurm-%A_%a.err" \
+                --dependency=afterok:$jobId4 \
+                createDelays.sh)
+
+jobId5=$(echo $jobId5 | sed 's/Submitted batch job //')
